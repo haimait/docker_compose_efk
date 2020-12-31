@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  #web:
+  #  image: httpd
+  #  ports:
+  #    - "1080:80" #避免和默认的80端口冲突
+  #  links:
+  #    - fluentd
+  #  logging:
+  #    driver: "fluentd"
+  #    options:
+  #      fluentd-address: localhost:24224
+  #      tag: httpd.access
+        
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    environment:
+      - TZ=Asia/Shanghai    # 更改容器时区为 CST（默认为UTC）  
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - myweb 
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      #- ./elasticsearch/es/plugins/x-pack-core:/usr/share/elasticsearch/modules/x-pack-core
+      - ./elasticsearch/es/data/:/usr/share/elasticsearch/data
+      - ./elasticsearch/es/logs:/usr/share/elasticsearch/logs
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      discovery.type: single-node
+      TZ: Asia/Shanghai    # 更改容器时区为 CST（默认为UTC）
+    expose:
+      - 9200
+    ports:
+      - "9200:9200"
+    networks:
+      - myweb
+    
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: 7.3.1 
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kibana/data/logs:/usr/share/kibana/logs
+    environment:
+      - TZ=Asia/Shanghai    # 更改容器时区为 CST（默认为UTC）
+    networks:
+      - myweb
+    depends_on:
+      - elasticsearch
+
+    
+networks:
+
+  myweb:
+    driver: bridge      

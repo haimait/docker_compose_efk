@@ -1,0 +1,16 @@
+## Default Kibana configuration from Kibana base image.
+## https://github.com/elastic/kibana/blob/master/src/dev/build/tasks/os_packages/docker_generator/templates/kibana_yml.template.js
+#
+server.name: kibana
+server.host: 0.0.0.0
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+# monitoring.ui.container.elasticsearch.enabled: true
+
+## X-Pack security credentials
+
+# 支持中文
+i18n.locale: "zh-CN"
+
+#连接 elasticsearch的账号/密码
+#elasticsearch.username: elastic
+#elasticsearch.password: 123456
