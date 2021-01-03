@@ -84,7 +84,7 @@ linux系统
 
 ## 克隆项目
 ```sh
-git clone https://github.com/haimait/docker-compose.git
+git clone https://github.com/haimait/docker_compose_efk.git
 ```
 
 ## 启动的容器
