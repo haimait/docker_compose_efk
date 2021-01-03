@@ -19,24 +19,44 @@ https://blog.csdn.net/shykevin/article/details/104568715/
 .
 ├── docker-compose.yml
 ├── elasticsearch
-│   ├── config
-│   │   └── elasticsearch.yml
-│   └── es
-│       ├── data
-│       │   └── empty.keep
-│       └── logs
-│           └── empty.keep
+│   ├── config
+│   │   └── elasticsearch.yml
+│   └── es
+│       ├── data
+│       │   └── empty.keep
+│       ├── logs
+│       │   └── empty.keep
+│       └── plugins
+│           └── ik
+│               ├── commons-codec-1.9.jar
+│               ├── commons-logging-1.2.jar
+│               ├── config
+│               │   ├── extra_main.dic
+│               │   ├── extra_single_word.dic
+│               │   ├── extra_single_word_full.dic
+│               │   ├── extra_single_word_low_freq.dic
+│               │   ├── extra_stopword.dic
+│               │   ├── IKAnalyzer.cfg.xml
+│               │   ├── main.dic
+│               │   ├── preposition.dic
+│               │   ├── quantifier.dic
+│               │   ├── stopword.dic
+│               │   ├── suffix.dic
+│               │   └── surname.dic
+│               ├── elasticsearch-analysis-ik-7.3.1.jar
+│               ├── httpclient-4.5.2.jar
+│               ├── httpcore-4.4.4.jar
+│               ├── plugin-descriptor.properties
+│               └── plugin-security.policy
 ├── fluentd
-│   ├── conf
-│   │   └── fluent.conf
-│   └── Dockerfile
+│   ├── conf
+│   │   └── fluent.conf
+│   └── Dockerfile
 ├── kibana
-│   ├── config
-│   │   └── kibana.yml
-│   ├── data
-│   │   └── logs
-│   └── Dockerfile
-└──  README.md
+│   ├── config
+│   │   └── kibana.yml
+│   └── Dockerfile
+└── README.md
 ```
 
 
@@ -207,3 +227,31 @@ https://blog.csdn.net/qiaorui_/article/details/97375237
 https://blog.csdn.net/cui884658/article/details/106805325/
 
 
+## elasticsearch安装ik分词器
+
+这里默认已经安装好了，7.3.1版本的ik分词器
+
+如果想要换成其它的版本的es，就需要下载对应版本的ik分词器
+
+到下面的地址里找到对应的版本
+
+https://github.com/medcl/elasticsearch-analysis-ik
+
+以7.3.1为例
+
+```sh
+cd elasticsearch/es/plugins 
+rm -rf ik/ #删除原来之前的ik分词器
+mkdir ik #新建ik目录
+wget https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.3.1/elasticsearch-analysis-ik-7.3.1.zip
+unzip elasticsearch-analysis-ik-7.3.1.zip -d ./ik/ #解压ik插件到ik目录
+chmod -R 777 elasticsearch/es/ #添加权限
+#要删除或移走压缩包，elasticsearch/es/plugins目录里不能放压缩包不然会报错
+rm elasticsearch-analysis-ik-7.3.1.zip 
+docker-compose restart #重启服务
+root@haima-PC:/usr/local/docker/efk/docker_compose_efk# docker exec -it docker_compose_efk_elasticsearch_1 bash ./bin/elasticsearch-plugin list #查看插件列表已经生效
+ik
+```
+
+参考下面的地址:
+https://www.cnblogs.com/szwdun/p/10664348.html
