@@ -126,6 +126,10 @@ curl http://localhost:1080/
 
 
 ## 访问kibana管理页面
+http://localhost:5601/ #内网ip:5601
+
+或者
+
 http://10.10.10.254:5601 #公网ip:5601
 
 ### Create index pattern 创建索引
