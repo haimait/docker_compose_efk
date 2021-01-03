@@ -69,13 +69,16 @@ linux系统
 安装好docker 和 docker-compose
 
 
-## linux系统修改配置文件
+## 系统调优，linux系统修改配置文件
 
  1. 修改 `/etc/sysctl.conf` 文件 
 
     此参数一定要改，否则Elasticsearch 无法启动
 
-    `vm.max_map_count = 2621440`
+    ```sh
+    vm.max_map_count = 2621440
+    fs.file-max = 655350
+    ```
 
  2. 加载配置
 
