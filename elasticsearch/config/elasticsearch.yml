@@ -15,6 +15,8 @@ http.port: 9200
 discovery.type: single-node     # 启动单节点类型
 xpack.monitoring.collection.enabled: false # 关闭x-pack认证
 
-
+#解决跨域的问题
+http.cors.enabled: true
+http.cors.allow-origin: "*"
 
 
