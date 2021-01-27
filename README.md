@@ -93,8 +93,8 @@ git clone https://github.com/haimait/docker_compose_efk.git
 ## 启动的容器
 
 ```sh
-[root@HmEduCentos01 efk]# cd efk
-[root@HmEduCentos01 efk]# chmod -R 777 elasticsearch/es/
+[root@HmEduCentos01 efk]# cd docker_compose_efk
+[root@HmEduCentos01 efk]# chmod -R 777 ./*
 [root@HmEduCentos01 efk]# docker-compose build
 [root@HmEduCentos01 efk]# docker-compose up -d #启动
 [root@HmEduCentos01 efk]# docker ps -a
